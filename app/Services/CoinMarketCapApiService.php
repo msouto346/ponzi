@@ -49,4 +49,52 @@ class CoinMarketCapApiService
 
         return round($response['data'][strtoupper($coin)]['quote']['USD']['percent_change_' . $scale], 2);
     }
+
+    public function getInfo(string $coin)
+    {
+        $response = self::fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
+        if ($response['status']['error_code'] !== 0) {
+            return $response['status']['error_message'];
+        }
+        $infoArray = [
+            'name',
+            'symbol',
+            'max_supply',
+            'circulating_supply',
+            'cmc_rank'
+        ];
+
+        $infoCollection = collect($response['data'][strtoupper($coin)]);
+        $responseCollection = $infoCollection->only($infoArray);
+        $priceCollection = $infoCollection->only('quote')->flatMap(function ($item) {
+            return $item;
+        });
+
+        return $responseCollection->merge($priceCollection)->toArray();
+    }
+
+    public function pumpOrDump($coin): string
+    {
+        $response = intval(round(self::getPercentage($coin)));
+        switch (true) {
+            case in_array($response, range(-1, -5)):
+                return 'It\'s just a lil bit of a dip';
+            case in_array($response, range(-6, -9)):
+                return 'Well... I think this is good for bitcoin actually!';
+            case in_array($response, range(-10, -19)):
+                return 'We just trying to shake the weak hands.';
+            case $response < -20:
+                return 'Ponzi';
+            case in_array($response, range(0, 5)):
+                return 'We doing ok.';
+            case in_array($response, range(6, 9)):
+                return 'We pumping quite well.';
+            case in_array($response, range(11, 19)):
+                return 'This quite the leg up!';
+            case $response > 20:
+                return 'We pumping like a mother fucker!';
+            default:
+                return 'I don\'t know whether we pumping or dumping...';
+        }
+    }
 }

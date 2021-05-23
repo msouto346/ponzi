@@ -50,4 +50,22 @@ class CoinMarketCapApiServiceTest extends TestCase
         $request = $this->service->getPercentage('btc', 'wrong timescale');
         self::assertStringContainsString('That timescale is not supported.', $request);
     }
+
+    /** @test */
+    public function it_returns_an_array_with_the_main_info_of_the_coin(): void
+    {
+        $infoArray = [
+            'name',
+            'symbol',
+            'max_supply',
+            'circulating_supply',
+            'cmc_rank',
+            'USD'
+        ];
+        $request = $this->service->getInfo('btc');
+        self::assertIsArray($request);
+        foreach ($infoArray as $key) {
+            self::assertArrayHasKey($key, $request);
+        }
+    }
 }
