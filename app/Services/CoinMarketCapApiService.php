@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Http;
 
 class CoinMarketCapApiService
 {
-    private string $baseUrl;
-    private array $headers;
+    private $baseUrl;
+    private $headers;
 
     public function __construct()
     {
@@ -96,5 +96,36 @@ class CoinMarketCapApiService
             default:
                 return 'I don\'t know whether we pumping or dumping...';
         }
+    }
+
+    public function getTopCoins($number = 20)
+    {
+        $coins = self::fetch('cryptocurrency/map', [
+            'start' => 1,
+            'limit' => $number,
+            'sort' => 'cmc_rank'
+        ]);
+
+        if ($coins['status']['error_code'] !== 0) {
+            return $coins['status']['error_message'];
+        }
+
+        $pluckedCoin = collect($coins['data'])->pluck('symbol');
+
+        $multipleCoinsData = self::fetch('cryptocurrency/quotes/latest', [
+            'symbol' => implode(',', $pluckedCoin->toArray()),
+        ]);
+
+        if ($multipleCoinsData['status']['error_code'] !== 0) {
+            return $multipleCoinsData['status']['error_message'];
+        }
+        $topCoinsArray = collect($multipleCoinsData['data'])->sortBy('cmc_rank')->toArray();
+        return array_map(function ($coin) {
+            return [
+                'name' => $coin['name'],
+                'symbol' => $coin['symbol'],
+                'quote' => $coin['quote']['USD']
+            ];
+        }, $topCoinsArray);
     }
 }
