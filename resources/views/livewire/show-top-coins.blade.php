@@ -1,6 +1,5 @@
-<div class="ml-4">
-    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-blue-400 py-2 px-4 border border-blue-500 hover:border-transparent rounded mb-2" wire:click="refreshCoins">Refresh</button>
-    <table>
+<div class="flex float-left">
+    <table class="mt-20">
         <thead>
         <tr>
             <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Name</th>
@@ -20,4 +19,5 @@
         @endforeach
         </tbody>
     </table>
+    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-blue-400 py-2 px-4 border border-blue-500 hover:border-transparent rounded absolute" wire:click="refreshCoins">Refresh</button>
 </div>
