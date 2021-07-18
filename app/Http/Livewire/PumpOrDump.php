@@ -9,6 +9,8 @@ class PumpOrDump extends Component
 {
     public $marketSentiment;
 
+    protected $listeners = ['coinsRefreshed' => 'refreshComponent'];
+
     public function mount()
     {
         $this->marketSentiment = (new CoinMarketCapApiService())->pumpOrDump('btc');
@@ -17,5 +19,10 @@ class PumpOrDump extends Component
     public function render()
     {
         return view('livewire.pump-or-dump');
+    }
+
+    public function refreshComponent()
+    {
+        $this->marketSentiment = (new CoinMarketCapApiService())->pumpOrDump('btc');
     }
 }
