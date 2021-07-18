@@ -53,9 +53,15 @@ class CoinMarketCapApiService
     public function getInfo(string $coin)
     {
         $response = self::fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
+        $responseType = 'symbol';
         if ($response['status']['error_code'] !== 0) {
-            return $response['status']['error_message'];
+            $response = self::fetch('cryptocurrency/quotes/latest', ['slug' => strtolower($coin)]);
+            $responseType = 'slug';
+            if ($response['status']['error_code'] !== 0) {
+                return $response['status']['error_message'];
+            }
         }
+
         $infoArray = [
             'name',
             'symbol',
@@ -64,7 +70,8 @@ class CoinMarketCapApiService
             'cmc_rank'
         ];
 
-        $infoCollection = collect($response['data'][strtoupper($coin)]);
+
+        $infoCollection = $responseType === 'symbol' ? collect($response['data'][strtoupper($coin)]) : collect(reset($response['data']));
         $responseCollection = $infoCollection->only($infoArray);
         $priceCollection = $infoCollection->only('quote')->flatMap(function ($item) {
             return $item;
