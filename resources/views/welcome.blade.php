@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mx-10">
+    <div class="grid grid-cols-3 mx-4">
+    @auth
     <livewire:show-top-coins>
-    <div class="w-1/2">
     <livewire:show-coin-info>
+    <livewire:pump-or-dump>
     </div>
-    </div>
+    @else
+    <h3>Login to see info about the coins</h3>
+    @endauth
 @endsection

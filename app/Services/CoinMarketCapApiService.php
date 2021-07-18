@@ -73,28 +73,28 @@ class CoinMarketCapApiService
         return $responseCollection->merge($priceCollection)->toArray();
     }
 
-    public function pumpOrDump($coin): string
+    public function pumpOrDump($coin): array
     {
         $response = intval(round(self::getPercentage($coin)));
         switch (true) {
             case in_array($response, range(-1, -5)):
-                return 'It\'s just a lil bit of a dip';
+                return ['message' => 'It\'s just a lil bit of a dip', 'color' => 'red'];
             case in_array($response, range(-6, -9)):
-                return 'Well... I think this is good for bitcoin actually!';
+                return ['message' => 'Well... I think this is good for bitcoin actually!', 'color' => 'red'];
             case in_array($response, range(-10, -19)):
-                return 'We just trying to shake the weak hands.';
+                return ['message' => 'We just trying to shake the weak hands.', 'color' => 'red'];
             case $response < -20:
-                return 'Ponzi';
+                return ['message' => 'Ponzi', 'color' => 'red'];
             case in_array($response, range(0, 5)):
-                return 'We doing ok.';
+                return ['message' => 'We doing ok.', 'color' => 'green'];
             case in_array($response, range(6, 9)):
-                return 'We pumping quite well.';
+                return ['message' => 'We pumping quite well.', 'color' => 'green'];
             case in_array($response, range(11, 19)):
-                return 'This quite the leg up!';
+                return ['message' => 'This quite the leg up!', 'color' => 'green'];
             case $response > 20:
-                return 'We pumping like a mother fucker!';
+                return ['message' => 'We pumping like a mother fucker!', 'color' => 'green'];
             default:
-                return 'I don\'t know whether we pumping or dumping...';
+                return ['message' => 'I don\'t know whether we pumping or dumping...', 'color' => 'gray'];
         }
     }
 

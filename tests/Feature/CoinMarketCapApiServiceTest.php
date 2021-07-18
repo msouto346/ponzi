@@ -70,7 +70,7 @@ class CoinMarketCapApiServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_a_string_saying_if_the_market_is_pumping_or_dumping(): void
+    public function it_returns_an_array_with_two_string_when_fetching_for_market_sentiment(): void
     {
         $percentage = $this->service->getPercentage('btc');
         $pumpOrDump = $this->service->pumpOrDump('btc');
@@ -79,32 +79,43 @@ class CoinMarketCapApiServiceTest extends TestCase
         switch (true) {
             case in_array($integer, range(-1, -5)):
                 $string = 'It\'s just a lil bit of a dip';
+                $color = 'red';
                 break;
             case in_array($integer, range(-6, -9)):
                 $string = 'Well... I think this is good for bitcoin actually!';
+                $color = 'red';
                 break;
             case in_array($integer, range(-10, -19)):
                 $string = 'We just trying to shake the weak hands.';
+                $color = 'red';
                 break;
             case $integer < -20:
                 $string = 'Ponzi';
+                $color = 'red';
                 break;
             case in_array($integer, range(0, 5)):
                 $string = 'We doing ok.';
+                $color = 'green';
                 break;
             case in_array($integer, range(6, 9)):
                 $string = 'We pumping quite well.';
+                $color = 'green';
                 break;
             case in_array($integer, range(11, 19)):
                 $string = 'This quite the leg up!';
+                $color = 'green';
                 break;
             case $integer > 20:
                 $string = 'We pumping like a mother fucker!';
+                $color = 'green';
                 break;
             default:
                 $string = 'I don\'t know whether we pumping or dumping...';
+                $color = 'gray';
         }
-        $this->assertStringContainsString($string, $pumpOrDump);
+        $this->assertIsArray($pumpOrDump);
+        $this->assertArrayHasKey('message', $pumpOrDump, $string);
+        $this->assertArrayHasKey('color', $pumpOrDump, $color);
     }
 
     /** @test */
