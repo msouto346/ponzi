@@ -135,4 +135,36 @@ class CoinMarketCapApiService
             ];
         }, $topCoinsArray);
     }
+
+    public function getWinners($number = 5)
+    {
+        $coins = self::fetch('cryptocurrency/listings/latest', [
+            'percent_change_24h_min' => 10,
+            'sort' => 'percent_change_24h',
+            'sort_dir' => 'desc',
+            'limit' => $number <= 20 ? $number : 20
+        ]);
+
+        if ($coins['status']['error_code'] !== 0) {
+            return $coins['status']['error_message'];
+        }
+
+        return collect($coins['data']);
+    }
+
+    public function getLosers($number = 5)
+    {
+        $coins = self::fetch('cryptocurrency/listings/latest', [
+            'percent_change_24h_max' => -10,
+            'sort' => 'percent_change_24h',
+            'sort_dir' => 'asc',
+            'limit' => $number <= 20 ? $number : 20
+        ]);
+
+        if ($coins['status']['error_code'] !== 0) {
+            return $coins['status']['error_message'];
+        }
+
+        return collect($coins['data']);
+    }
 }

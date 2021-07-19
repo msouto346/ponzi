@@ -124,4 +124,46 @@ class CoinMarketCapApiServiceTest extends TestCase
         $request = $this->service->getTopCoins();
         $this->assertCount(20, $request);
     }
+
+    /** @test */
+    public function it_returns_an_collection_with_the_5_biggest_winners_as_default(): void
+    {
+        $request = $this->service->getWinners();
+        $this->assertCount(5, $request);
+    }
+
+    /** @test */
+    public function it_returns_an_collection_with_the_specified_number_of_biggest_coin_winners(): void
+    {
+        $request = $this->service->getWinners(20);
+        $this->assertCount(20, $request);
+    }
+
+    /** @test */
+    public function if_number_passed_to_biggest_winners_is_bigger_than_20_it_defaults_to_20_coins(): void
+    {
+        $request = $this->service->getWinners(40);
+        $this->assertCount(20, $request);
+    }
+
+    /** @test */
+    public function it_returns_an_collection_with_the_5_biggest_losers_as_default(): void
+    {
+        $request = $this->service->getLosers();
+        $this->assertCount(5, $request);
+    }
+
+    /** @test */
+    public function it_returns_an_collection_with_the_specified_number_of_biggest_coin_losers(): void
+    {
+        $request = $this->service->getLosers(20);
+        $this->assertCount(20, $request);
+    }
+
+    /** @test */
+    public function if_number_passed_to_biggest_losers_is_bigger_than_20_it_defaults_to_20_coins(): void
+    {
+        $request = $this->service->getLosers(40);
+        $this->assertCount(20, $request);
+    }
 }
