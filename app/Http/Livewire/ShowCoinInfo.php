@@ -9,10 +9,16 @@ class ShowCoinInfo extends Component
 {
     public $coin;
     public $coinResult;
+    public $latest;
+
+    public function mount()
+    {
+        $this->latest = (new CoinMarketCapApiService())->getLatest();
+    }
 
     public function updatedCoin($newValue)
     {
-        if(strlen($newValue) > 2) {
+        if (strlen($newValue) > 2) {
             $response = (new CoinMarketCapApiService())->getInfo($newValue);
             $this->coinResult = $response;
         }

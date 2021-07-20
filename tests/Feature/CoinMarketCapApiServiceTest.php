@@ -166,4 +166,11 @@ class CoinMarketCapApiServiceTest extends TestCase
         $request = $this->service->getLosers(40);
         $this->assertCount(20, $request);
     }
+
+    /** @test */
+    public function it_returns_the_latest_5_coins_added_to_the_system(): void
+    {
+        $request = $this->service->getLatest();
+        $this->assertCount(5, $request);
+    }
 }

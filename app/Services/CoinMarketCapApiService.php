@@ -167,4 +167,19 @@ class CoinMarketCapApiService
 
         return collect($coins['data']);
     }
+
+    public function getLatest($number = 5)
+    {
+        $coins = $this->fetch('cryptocurrency/listings/latest', [
+            'sort' => 'date_added',
+            'sort_dir' => 'desc',
+            'limit' => $number
+        ]);
+
+        if ($coins['status']['error_code'] !== 0) {
+            return $coins['status']['error_message'];
+        }
+
+        return collect($coins['data']);
+    }
 }

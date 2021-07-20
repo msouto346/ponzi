@@ -11,7 +11,7 @@
         </button>
     </div>
     @if (strlen($coin) > 2 && is_array($coinResult))
-    <div class="text-center pt-10">
+    <div class="text-center pt-10 border-b border-black mb-4">
         <h3>{{$coinResult['name']}} ({{$coinResult['symbol']}})</h3>
         <p>Market Cap: {{number_format($coinResult['USD']['market_cap'])}}</p>
         <p>Maximum Supply: {{number_format($coinResult['max_supply'])}}</p>
@@ -21,10 +21,38 @@
         </h4>
     </div>
     @elseif(strlen($coin) > 0)
-    <div class="text-center pt-10">
+    <div class="text-center pt-10 border-b border-black mb-4">
         <h3>There are no coins with that symbol in our database.</h3>
     </div>
     @else
-        <h3 class="text-center pt-10">Search for a coin above <br> to view it's information...</h3>
+    <h3 class="text-center pt-10 border-b border-black mb-4">Search for a coin above <br> to view it's information...
+    </h3>
     @endif
+    <h2 class="text-center">Lastest added</h2>
+    <table class="mt-10 w-full">
+        <thead>
+            <tr>
+                <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Name</th>
+                <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Price</th>
+                <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">% (24h)</th>
+                <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Market Cap</th>
+                <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Date Added</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($latest as $project)
+            <tr>
+                <td class="border-t border-gray-200 text-center">{{$project['name'] . ' (' . $project['symbol'] . ')'}}
+                </td>
+                <td class="border-t border-gray-200 text-center">{{round($project['quote']['USD']['price'], 2)}}</td>
+                <td class="border-t border-gray-200 text-center">{{round($project['quote']['USD']['percent_change_24h'],
+                    2) . '%'}}</td>
+                <td class="border-t border-gray-200 text-center">
+                    {{number_format($project['quote']['USD']['market_cap'])}}</td>
+                <td class="border-t border-gray-200-text-center">
+                    {{Carbon\Carbon::parse($project['date_added'])->format('d-m-Y')}}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
