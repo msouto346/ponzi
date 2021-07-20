@@ -2,16 +2,26 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\ShowTopCoins;
-use Livewire\Livewire;
 use Tests\TestCase;
+use App\Models\User;
+use Livewire\Livewire;
+use App\Http\Livewire\ShowTopCoins;
 
 class ShowTopCoinsTest extends TestCase
 {
+    private $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
+    }
+
     /** @test */
     public function main_page_contains_show_top_coins_component(): void
     {
-        $this->get('/')
+        $this->get('/home')
             ->assertSeeLivewire('show-top-coins');
     }
 

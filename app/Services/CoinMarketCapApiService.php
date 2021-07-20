@@ -29,7 +29,7 @@ class CoinMarketCapApiService
 
     public function getPrice(string $coin)
     {
-        $response = self::fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
+        $response = $this->fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
         if ($response['status']['error_code'] !== 0) {
             return $response['status']['error_message'];
         }
@@ -39,7 +39,7 @@ class CoinMarketCapApiService
 
     public function getPercentage(string $coin, string $scale = '24h')
     {
-        $response = self::fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
+        $response = $this->fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
         if ($response['status']['error_code'] !== 0) {
             return $response['status']['error_message'];
         }
@@ -52,10 +52,10 @@ class CoinMarketCapApiService
 
     public function getInfo(string $coin)
     {
-        $response = self::fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
+        $response = $this->fetch('cryptocurrency/quotes/latest', ['symbol' => strtoupper($coin)]);
         $responseType = 'symbol';
         if ($response['status']['error_code'] !== 0) {
-            $response = self::fetch('cryptocurrency/quotes/latest', ['slug' => strtolower($coin)]);
+            $response = $this->fetch('cryptocurrency/quotes/latest', ['slug' => strtolower($coin)]);
             $responseType = 'slug';
             if ($response['status']['error_code'] !== 0) {
                 return $response['status']['error_message'];
@@ -82,7 +82,7 @@ class CoinMarketCapApiService
 
     public function pumpOrDump($coin): array
     {
-        $response = intval(round(self::getPercentage($coin)));
+        $response = intval(round($this->getPercentage($coin)));
         switch (true) {
             case in_array($response, range(-1, -5)):
                 return ['message' => 'It\'s just a lil bit of a dip', 'color' => 'red'];
@@ -107,7 +107,7 @@ class CoinMarketCapApiService
 
     public function getTopCoins($number = 20)
     {
-        $coins = self::fetch('cryptocurrency/map', [
+        $coins = $this->fetch('cryptocurrency/map', [
             'start' => 1,
             'limit' => $number,
             'sort' => 'cmc_rank'
@@ -119,7 +119,7 @@ class CoinMarketCapApiService
 
         $pluckedCoin = collect($coins['data'])->pluck('symbol');
 
-        $multipleCoinsData = self::fetch('cryptocurrency/quotes/latest', [
+        $multipleCoinsData = $this->fetch('cryptocurrency/quotes/latest', [
             'symbol' => implode(',', $pluckedCoin->toArray()),
         ]);
 
@@ -138,7 +138,7 @@ class CoinMarketCapApiService
 
     public function getWinners($number = 5)
     {
-        $coins = self::fetch('cryptocurrency/listings/latest', [
+        $coins = $this->fetch('cryptocurrency/listings/latest', [
             'percent_change_24h_min' => 10,
             'sort' => 'percent_change_24h',
             'sort_dir' => 'desc',
@@ -154,7 +154,7 @@ class CoinMarketCapApiService
 
     public function getLosers($number = 5)
     {
-        $coins = self::fetch('cryptocurrency/listings/latest', [
+        $coins = $this->fetch('cryptocurrency/listings/latest', [
             'percent_change_24h_max' => -10,
             'sort' => 'percent_change_24h',
             'sort_dir' => 'asc',
