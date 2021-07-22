@@ -28,7 +28,7 @@
     <h3 class="text-center pt-10 border-b border-black mb-4">Search for a coin above <br> to view it's information...
     </h3>
     @endif
-    <h2 class="text-center">Lastest added</h2>
+    <h2 class="text-center">Latest added</h2>
     <table class="mt-10 w-full">
         <thead>
             <tr>
