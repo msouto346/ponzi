@@ -8,7 +8,7 @@ use Livewire\Component;
 class ShowTopCoins extends Component
 {
 
-    public $coins;
+    public $coins = [];
 
     public function mount()
     {

@@ -9,7 +9,7 @@ class ShowCoinInfo extends Component
 {
     public $coin;
     public $coinResult;
-    public $latest;
+    public $latest = [];
 
     public function mount()
     {
