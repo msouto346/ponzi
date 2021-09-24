@@ -5,7 +5,7 @@
                 <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Name</th>
                 <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Price</th>
                 <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">% (24h)</th>
-                <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600">Market Cap</th>
+                <th class="bg-gray-100 border-gray-200 px-6 py-4 text-gray-600 hidden lg:block">Market Cap</th>
             </tr>
         </thead>
         <tbody>
@@ -15,7 +15,7 @@
                 <td class="border-t border-gray-200 text-center">{{round($coin['quote']['price'], 2)}}</td>
                 <td class="border-t border-gray-200 text-center">{{round($coin['quote']['percent_change_24h'], 2) .
                     '%'}}</td>
-                <td class="border-t border-gray-200 text-center">{{number_format($coin['quote']['market_cap'])}}</td>
+                <td class="border-t border-gray-200 text-center hidden lg:block">{{number_format($coin['quote']['market_cap'])}}</td>
             </tr>
             @endforeach
         </tbody>
