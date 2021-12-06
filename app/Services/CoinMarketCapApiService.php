@@ -182,4 +182,11 @@ class CoinMarketCapApiService
 
         return collect($coins['data']);
     }
+
+    public function favorites()
+    {
+        $symbols = auth()->user()->favorites->implode('symbol', ',');
+        $response = $this->fetch('cryptocurrency/quotes/latest', ['symbol' => $symbols]);
+        return collect($response['data']);
+    }
 }
