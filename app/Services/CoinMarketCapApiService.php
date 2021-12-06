@@ -187,6 +187,11 @@ class CoinMarketCapApiService
     {
         $symbols = auth()->user()->favorites->implode('symbol', ',');
         $response = $this->fetch('cryptocurrency/quotes/latest', ['symbol' => $symbols]);
+        if ($response['status']['error_code'] !== 0) {
+            info('favorites error', [$response['status']['error_message']]);
+            return collect();
+        }
+
         return collect($response['data']);
     }
 }
