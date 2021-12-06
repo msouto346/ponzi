@@ -59,7 +59,6 @@
         @endforeach
         </tbody>
     </table>
-    {{dump($favorites)}}
     @if(! $favorites->count())
         <h2 class="mt-8">You have no favorites yet</h2>
     @endif
