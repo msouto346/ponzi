@@ -26,6 +26,7 @@ class ShowFavoriteCoins extends Component
         ]);
         $this->favorites = (new CoinMarketCapApiService())->favorites();
         $this->alreadyAdded = true;
+        info('favorites', [$this->favorites]);
     }
 
     public function removeFromFavorites(string $symbol)
